@@ -196,10 +196,17 @@ class my_display:
         if ((time.time() - self.last_update_check) > config.DS_CHECK_INTERVAL):
             self.last_update_check = time.time()
             try:
-                self.weather = forecast(config.DS_API_KEY,
-                                        config.LAT,
-                                        config.LON,
-                                        exclude='minutely')
+                if config.METRIC:
+                    self.weather = forecast(config.DS_API_KEY,
+                                            config.LAT,
+                                            config.LON,
+                                            exclude='minutely',
+                                            units='si')
+                else:
+                    self.weather = forecast(config.DS_API_KEY,
+                                            config.LAT,
+                                            config.LON,
+                                            exclude='minutely')
 
                 sunset_today = datetime.datetime.fromtimestamp(
                     self.weather.daily[0].sunsetTime)
